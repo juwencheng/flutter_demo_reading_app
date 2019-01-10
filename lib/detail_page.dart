@@ -12,6 +12,7 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
@@ -25,143 +26,34 @@ class _DetailPageState extends State<DetailPage> {
           },
         ),
       ),
-      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: ListView(
           children: <Widget>[
-            Container(
-              height: 120,
-              color: Colors.white,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          image: DecorationImage(
-                              image: NetworkImage(widget.book.cover),
-                              fit: BoxFit.cover)),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 16.0),
-                      child: Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              widget.book.title,
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontFamily: "Times",
-                                color: Color(0xFF0b0d10),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 4.0),
-                            Text(
-                              "Author: ${widget.book.author}",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Color(0xFF0b0d10),
-                              ),
-                            ),
-                            SizedBox(height: 10.0),
-                            Text(
-                              "${widget.book.description}",
-                              softWrap: true,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            SizedBox(height: 10.0),
-                            Container(
-                              height: 20,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Icon(Icons.star,
-                                          size: 18, color: Color(0xFFFED43B)),
-                                      SizedBox(width: 4.0),
-                                      Icon(Icons.star,
-                                          size: 18, color: Color(0xFFFED43B)),
-                                      SizedBox(width: 4.0),
-                                      Icon(Icons.star,
-                                          size: 18, color: Color(0xFFFED43B)),
-                                      SizedBox(width: 4.0),
-                                      Icon(Icons.star,
-                                          size: 18, color: Color(0xFFFED43B)),
-                                      SizedBox(width: 4.0),
-                                      Icon(Icons.star,
-                                          size: 18, color: Color(0xFFFED43B)),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Text(
-                                    "5.0",
-                                    style: TextStyle(
-                                        color: Color(0xFFFED43B), fontSize: 14),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
+            _HeaderView(
+              book: widget.book,
             ),
             SizedBox(height: 16),
             Divider(
               height: 1,
             ),
+            // 三个操作按钮
             Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  FlatButton.icon(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.thumb_up,
+                  _ActionButton(
                       color: Color(0xFF7B8EA2),
-                    ),
-                    label: Text("Like"),
-                  ),
-                  FlatButton.icon(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.share,
+                      title: "Like",
+                      iconData: Icons.thumb_up),
+                  _ActionButton(
                       color: Color(0xFF7B8EA2),
-                    ),
-                    label: Text("Share"),
-                  ),
-                  FlatButton.icon(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.collections_bookmark,
+                      title: "Share",
+                      iconData: Icons.share),
+                  _ActionButton(
                       color: Color(0xFF7B8EA2),
-                    ),
-                    label: Text("Bookself"),
-                  )
+                      title: "Bookself",
+                      iconData: Icons.collections_bookmark),
                 ],
               ),
             ),
@@ -264,6 +156,130 @@ class _BottomToolbar extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class _HeaderView extends StatelessWidget {
+  final Book book;
+  _HeaderView({this.book});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 120,
+      color: Colors.white,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  image: DecorationImage(
+                      image: NetworkImage(book.cover), fit: BoxFit.cover)),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0),
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      book.title,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Times",
+                        color: Color(0xFF0b0d10),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 4.0),
+                    Text(
+                      "Author: ${book.author}",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF0b0d10),
+                      ),
+                    ),
+                    SizedBox(height: 10.0),
+                    Text(
+                      "${book.description}",
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    SizedBox(height: 10.0),
+                    Container(
+                      height: 20,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(Icons.star,
+                                  size: 18, color: Color(0xFFFED43B)),
+                              SizedBox(width: 4.0),
+                              Icon(Icons.star,
+                                  size: 18, color: Color(0xFFFED43B)),
+                              SizedBox(width: 4.0),
+                              Icon(Icons.star,
+                                  size: 18, color: Color(0xFFFED43B)),
+                              SizedBox(width: 4.0),
+                              Icon(Icons.star,
+                                  size: 18, color: Color(0xFFFED43B)),
+                              SizedBox(width: 4.0),
+                              Icon(Icons.star,
+                                  size: 18, color: Color(0xFFFED43B)),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            "5.0",
+                            style: TextStyle(
+                                color: Color(0xFFFED43B), fontSize: 14),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _ActionButton extends StatelessWidget {
+  final Color color;
+  final String title;
+  final IconData iconData;
+  _ActionButton({this.color, this.title, this.iconData});
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton.icon(
+      onPressed: () {},
+      icon: Icon(
+        iconData,
+        color: color,
+      ),
+      label: Text(title, style: TextStyle(color: color)),
     );
   }
 }
