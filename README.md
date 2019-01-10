@@ -3,7 +3,6 @@
 本项目的目的是加深对Flutter布局系统的理解
 from https:&#x2F;&#x2F;dribbble.com&#x2F;shots&#x2F;5810845-Reading-App
 
-
 ## 效果
 
 ## iOS 
@@ -17,6 +16,9 @@ from https:&#x2F;&#x2F;dribbble.com&#x2F;shots&#x2F;5810845-Reading-App
 ![Home](screenshots/android_home.png)
 ![Detail](screenshots/android_detail.png)
 
+## 搜索功能展示
+
+![Search Function](screenshots/search_function.gif)
 
 ## Getting Started
 
