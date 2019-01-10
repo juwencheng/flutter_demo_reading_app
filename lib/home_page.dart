@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reading_app/detail_page.dart';
+import 'package:reading_app/home_search_delegate.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -7,6 +8,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  FocusNode _focus = new FocusNode();
   final Color fontColor = Color(0xFF0b0d10);
 
   final recommendList = <Book>[
@@ -53,6 +55,19 @@ class _HomePageState extends State<HomePage> {
       rating: 4.06, //https://www.goodreads.com/book/show/18488996-control
     ),
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _focus.addListener(() async {
+      if (_focus.hasFocus) {
+        _focus.unfocus();
+        var result =
+            await showSearch(context: context, delegate: HomeSearchDelegate());
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +122,7 @@ class _HomePageState extends State<HomePage> {
 //            elevation: 10,
 //            shadowColor: Color(0xffFAFAFA),
             child: TextField(
+              focusNode: _focus,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search),
                 hintText: "Search...",
@@ -241,102 +257,113 @@ class _RecommendListItem extends StatelessWidget {
     return Container(
       width: width,
       height: height,
-      child: Stack(
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) {
+              return DetailPage(
+                book: book,
+              );
+            },
+          ));
+        },
+        child: Stack(
 //        fit: StackFit.expand,
-        children: <Widget>[
-          Positioned(
-            top: offsetY + shadowOffset.dy,
-            left: shadowOffset.dx,
-            child: Container(
-              height: internalHeight,
-              width: internalWidth,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0xFFFAFAFA),
-                    offset: shadowOffset,
-                    blurRadius: shadowOffset.dy,
-                  ),
-                  BoxShadow(
-                    color: Color(0xFFFAFAFA),
-                    offset: -shadowOffset,
-                    blurRadius: shadowOffset.dy,
-                  ),
-                ],
+          children: <Widget>[
+            Positioned(
+              top: offsetY + shadowOffset.dy,
+              left: shadowOffset.dx,
+              child: Container(
+                height: internalHeight,
+                width: internalWidth,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xFFFAFAFA),
+                      offset: shadowOffset,
+                      blurRadius: shadowOffset.dy,
+                    ),
+                    BoxShadow(
+                      color: Color(0xFFFAFAFA),
+                      offset: -shadowOffset,
+                      blurRadius: shadowOffset.dy,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Positioned(
-            left: coverLeft,
-            top: 0,
-            child: Container(
-              width: coverWidth,
-              height: internalHeight,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-                image: DecorationImage(
-                  image: NetworkImage(book.cover),
-                  fit: BoxFit.cover,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black12,
-                    offset: shadowOffset,
-                    blurRadius: shadowOffset.dy,
+            Positioned(
+              left: coverLeft,
+              top: 0,
+              child: Container(
+                width: coverWidth,
+                height: internalHeight,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                  image: DecorationImage(
+                    image: NetworkImage(book.cover),
+                    fit: BoxFit.cover,
                   ),
-                ],
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      offset: shadowOffset,
+                      blurRadius: shadowOffset.dy,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Positioned(
-            left: contentLeft,
-            top: offsetY + shadowOffset.dy,
-            width: internalWidth - contentLeft,
-            height: internalHeight,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  book.title,
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontFamily: "Times",
-                    color: Color(0xFF0b0d10),
-                    fontWeight: FontWeight.bold,
+            Positioned(
+              left: contentLeft,
+              top: offsetY + shadowOffset.dy,
+              width: internalWidth - contentLeft,
+              height: internalHeight,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    book.title,
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontFamily: "Times",
+                      color: Color(0xFF0b0d10),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                SizedBox(height: 4.0),
-                Text(
-                  "Author: ${book.author}",
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Color(0xFF0b0d10),
+                  SizedBox(height: 4.0),
+                  Text(
+                    "Author: ${book.author}",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Color(0xFF0b0d10),
+                    ),
                   ),
-                ),
-                SizedBox(height: 6.0),
-                Divider(
-                  height: 1.0,
-                ),
-                SizedBox(height: 6.0),
-                Text(
-                  "${book.description}",
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
+                  SizedBox(height: 6.0),
+                  Divider(
+                    height: 1.0,
                   ),
-                )
-              ],
-            ),
-          )
-        ],
+                  SizedBox(height: 6.0),
+                  Text(
+                    "${book.description}",
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey,
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
