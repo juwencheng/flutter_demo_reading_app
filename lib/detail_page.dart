@@ -112,49 +112,52 @@ class _BottomToolbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomAppBar(
       color: Colors.white,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    "\$49.00",
-                    style: TextStyle(
-                      color: Color(0xFF244364),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+      child: Container(
+        height: 60.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "\$49.00",
+                      style: TextStyle(
+                        color: Color(0xFF244364),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    "\$65.00",
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 16,
-                      decoration:
-                          TextDecoration.combine([TextDecoration.lineThrough]),
+                    SizedBox(
+                      width: 10,
                     ),
-                  )
-                ],
-              )),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: RaisedButton(
-              color: Color(0xFF244364),
-              onPressed: () {},
-              child: Text(
-                "Buy",
-                style: TextStyle(color: Colors.white),
+                    Text(
+                      "\$65.00",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 16,
+                        decoration: TextDecoration.combine(
+                            [TextDecoration.lineThrough]),
+                      ),
+                    )
+                  ],
+                )),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: RaisedButton(
+                color: Color(0xFF244364),
+                onPressed: () {},
+                child: Text(
+                  "Buy",
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
